@@ -46,7 +46,7 @@ try
         font = varargin{3}; 
         rotangle = varargin{4};
         multiple = varargin{5};
-        additionalspacing = varargin{6};
+        additionalspacing = round(varargin{6});
         spacebar = varargin{7};
         rowspace = varargin{8};
         createframe = varargin{10};
@@ -168,6 +168,7 @@ for i = 1:length(nams)
     [row,col] = size(I2);
     
     % Extension    
+
     I3 = [I2,ones(row,additionalspacing*2)];
     I4 = [I3;ones((maxheight-row), col+additionalspacing*2)];   
     %disp([row, maxheight, maxheight-row, size(I4)])

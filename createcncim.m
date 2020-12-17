@@ -1,5 +1,5 @@
 function [maskimage, textimage, gray] = createcncim(myfile, mystr, fontsize, fontrot, multiprint, letterspacing, wordspacing, rowspacing,...
-    threshold, useimadj, imadjlow, imadjhigh, usehisteq, makeframe, circmask)
+    threshold, useimadj, imadjlow, imadjhigh, usehisteq, makeframe, circmask, sharpenim)
 % Copyright (C) 2020 Tomppa Pakarinen, pakarinentomppa@gmail.com
 
 
@@ -27,6 +27,10 @@ I = imread(myfile);
 addpath([pwd, '\Lettersprites']);
 %%
 subplot(2,2,1);
+
+if sharpenim == 1
+    I = imsharpen(I);
+end
 imshow(I);
 subplot(2,2,2);
 gray = rgb2gray(I);

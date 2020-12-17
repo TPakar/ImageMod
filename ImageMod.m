@@ -102,7 +102,7 @@ function checkboxhistogram_Callback(hObject, eventdata, handles)
 handles.histeqval = get(hObject, 'Value');
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hint: get(hObject,'Value') returns toggle state of checkboxhistogram
@@ -116,7 +116,7 @@ function sliderthreshold_Callback(hObject, eventdata, handles)
 handles.threshval = get(hObject,'Value');
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hints: get(hObject,'Value') returns position of slider
@@ -141,6 +141,16 @@ function checkboxsharpen_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+handles.sharpen = get(hObject,'Value');
+[handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
+    handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
+
+
+
+guidata(hObject, handles);
+
+
 % Hint: get(hObject,'Value') returns toggle state of checkboxsharpen
 
 
@@ -163,7 +173,7 @@ end
 
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hints: get(hObject,'Value') returns position of slider
@@ -200,7 +210,7 @@ end
 
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hints: get(hObject,'Value') returns position of slider
@@ -230,24 +240,35 @@ handles.file1 = [handles.path '\' handles.file];
 set(handles.textcurrentfile, 'String', handles.file);
 
 
-% initialize
+% initializ
 
-if ~isfield(handles, 'histweqval')
-    handles.histeqval = 0;
-    handles.imadj = 0;
-    handles. imadjlow = 0;
-    handles. imadjhigh = 1;
-    handles.threshval = 0.5;
-    handles.txtrot = 45;
-    handles.printletter = "I";
-    handles.fontsize = 1;
-    handles.multiprint = 1;
-    handles.letterspacing = 2;
-    handles.wordspacing = 0;
-    handles.rowspacing = 0;
-    handles.frameon = 0;
-    handles.circmask = 0;
-end
+%hobjects = [handles.sliderwordspacing ; handles.sliderthreshold ; handles.sliderrowspacing ; handles.sliderletterspacing ; handles.sliderfontsize ; ...
+%    handles.slideradjlow ; handles.slideradjhigh ; handles.editrot ; handles.editprintstring ; handles.checkboxsharpen ; handles.checkboxmultiprint ; ...
+%    handles.checkboximadj ; handles.checkboxframe ; handles.checkboxcircular]
+
+%[handles.wordspacing , handles.threshval , handles.rowspacing , handles.letterspacing , handles.fontsize , handles.imadjlow , handles.imadjhigh , ...
+%    handles.txtrot , handles.printletter , handles.imsharp , handles.multiprint , handles.imadj , handles.frameon , handles.circular]
+
+
+
+%if ~isfield(handles, 'histweqval')
+    
+    handles.histeqval = get(handles.checkboxhistogram, 'Value');
+    handles.imadj = get(handles.checkboximadj, 'Value');
+    handles. imadjlow = get(handles.slideradjlow, 'Value');
+    handles. imadjhigh = get(handles.slideradjhigh, 'Value');
+    handles.threshval = get(handles.sliderthreshold, 'Value');
+    handles.txtrot = str2double(get(handles.editrot, 'String'));
+    handles.printletter = get(handles.editprintstring, 'String');
+    handles.fontsize = get(handles.sliderfontsize, 'Value');
+    handles.multiprint = get(handles.checkboxmultiprint, 'Value');
+    handles.letterspacing = get(handles.sliderletterspacing, 'Value');
+    handles.wordspacing = get(handles.sliderwordspacing, 'Value');
+    handles.rowspacing = get(handles.sliderrowspacing, 'Value');
+    handles.frameon = get(handles.checkboxframe, 'Value');
+    handles.circmask = get(handles.checkboxcircular, 'Value');
+    handles.sharpen = get(handles.checkboxsharpen, 'Value');
+%end
 % Create the first bw image
 % varargin{1} = text string: Will be printed to the image
 % varargin{3} = Font size
@@ -260,7 +281,7 @@ end
 
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 
 
@@ -273,11 +294,11 @@ function pushbuttonSave_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.savename = handles.editname;
 
-%try
+try
     imwrite(handles.maskimage, handles.savename);
-%catch
-%   disp('Error! No image to be saved'); 
-%end
+catch
+   disp('Error! No image to be saved'); 
+end
 
 guidata(hObject, handles);
 
@@ -314,7 +335,7 @@ function checkboximadj_Callback(hObject, eventdata, handles)
 handles.imadj = get(hObject,'Value');
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hint: get(hObject,'Value') returns toggle state of checkboximadj
@@ -329,7 +350,7 @@ handles.printletter = get(hObject,'String');
 
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 guidata(hObject, handles);
 
 % Hints: get(hObject,'String') returns contents of editprintstring as text
@@ -358,7 +379,7 @@ anglestr = get(hObject,'String');
 handles.txtrot = str2double(anglestr);
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hints: get(hObject,'String') returns contents of editrot as text
@@ -386,7 +407,7 @@ function sliderfontsize_Callback(hObject, eventdata, handles)
 handles.fontsize = get(hObject, 'Value');
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hints: get(hObject,'Value') returns position of slider
@@ -413,7 +434,7 @@ function sliderletterspacing_Callback(hObject, eventdata, handles)
 handles.letterspacing = round(get(hObject, 'Value'));
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hints: get(hObject,'Value') returns position of slider
@@ -440,7 +461,7 @@ function sliderwordspacing_Callback(hObject, eventdata, handles)
 handles.wordspacing = get(hObject, 'Value');
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hints: get(hObject,'Value') returns position of slider
@@ -467,7 +488,7 @@ function sliderrowspacing_Callback(hObject, eventdata, handles)
 handles.rowspacing = get(hObject, 'Value');
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hints: get(hObject,'Value') returns position of slider
@@ -494,7 +515,7 @@ function checkboxmultiprint_Callback(hObject, eventdata, handles)
 handles.multiprint = get(hObject, 'Value');
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hint: get(hObject,'Value') returns toggle state of checkboxmultiprint
@@ -508,7 +529,7 @@ function checkboxframe_Callback(hObject, eventdata, handles)
 handles.frameon = get(hObject, 'Value');
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hint: get(hObject,'Value') returns toggle state of checkboxframe
@@ -522,7 +543,7 @@ function checkboxcircular_Callback(hObject, eventdata, handles)
 handles.circmask = get(hObject, 'Value');
 [handles.maskimage, handles.textimage, handles.gray] = createcncim(handles.file1, handles.printletter, handles.fontsize, handles.txtrot, handles.multiprint, ...
     handles.letterspacing, handles.wordspacing, handles.rowspacing, handles.threshval, handles.imadj, ...
-    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask);
+    handles.imadjlow, handles.imadjhigh, handles.histeqval, handles.frameon, handles.circmask, handles.sharpen);
 
 guidata(hObject, handles);
 % Hint: get(hObject,'Value') returns toggle state of checkboxcircular
